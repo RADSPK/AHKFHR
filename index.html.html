@@ -747,7 +747,8 @@
                         <!-- Birthday list will be generated here -->
                     </div>
                 </div>
-<h2 style="margin: 24px 0 16px 0; font-size: 1.3rem; color: var(--secondary-color);">Department Analytics</h2>
+
+                <h2 style="margin: 24px 0 16px 0; font-size: 1.3rem; color: var(--secondary-color);">Department Analytics</h2>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 24px; margin-bottom: 24px;">
                     <div class="card" style="flex-direction: column; align-items: flex-start; padding: 24px;">
                         <h3 style="margin-bottom: 16px; font-size: 1.1rem;">Gender Distribution by Department</h3>
@@ -882,7 +883,7 @@
         /* ========================================
            PASSWORD SECURITY
            ========================================
-           Current password: ahkf2025
+           Current password: rads2025
            
            The password is stored as a SHA-256 hash for security.
            Anyone viewing the source code cannot see the actual password.
@@ -898,7 +899,7 @@
            5. Update the comment to note your new password for your records
            ======================================== */
         
-        const PASSWORD_HASH = '621d783fdd36830b508c69d2ef077dd7852f95a3d220d44984f18fb21d173f2d';
+        const PASSWORD_HASH = '406a6f694d97da5dd6dff987168113510914dc80bcc6c3ae6b2eb29fdfddb496';
         
         // Function to hash password using SHA-256
         async function hashPassword(password) {
@@ -1271,7 +1272,7 @@
                 <h3 style="font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-bottom: 10px;">Personal & Contact</h3>
                 <div class="details-grid">
                     <div class="details-item"><h4>Employee ID</h4><p>${employee.ID || N_A}</p></div>
-                    <div class="details-item"><h4>Gender</h4><p>${employee.Gender || N_A}</p></div><div class="details-item"><h4>CNIC No.</h4><p>${employee[\'CNIC No.\'] || N_A}</p></div><div class="details-item"><h4>Date of Birth</h4><p>${employee[\'Date of Birth\'] || N_A}</p></div>
+                    <div class="details-item"><h4>Gender</h4><p>${employee.Gender || N_A}</p></div><div class="details-item"><h4>CNIC No.</h4><p>${employee['CNIC No.'] || N_A}</p></div><div class="details-item"><h4>Date of Birth</h4><p>${employee['Date of Birth'] || N_A}</p></div>
                     <div class="details-item"><h4>Contact Number</h4><p>${employee['Contact Number'] || N_A}</p></div>
                     <div class="details-item" style="grid-column: 1 / -1;"><h4>Address</h4><p>${employee.Address || N_A}</p></div>
                 </div>
@@ -1560,20 +1561,17 @@
         };
 
         
-        
-        // Birthday Calendar Functions
+        // Birthday Calendar Function
         function generateBirthdayCalendar() {
             const today = new Date();
             const currentMonth = today.getMonth();
             const currentYear = today.getFullYear();
             const currentDay = today.getDate();
             
-            // Set month name
             const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
                                'July', 'August', 'September', 'October', 'November', 'December'];
             document.getElementById('birthday-month-name').textContent = monthNames[currentMonth] + ' ' + currentYear;
             
-            // Get birthdays in current month
             const birthdaysThisMonth = employees
                 .filter(emp => emp.Status !== 'Inactive' && emp['Date of Birth'])
                 .map(emp => {
@@ -1583,39 +1581,34 @@
                         name: emp.Name,
                         department: emp.Department,
                         day: dob.getDate(),
-                        month: dob.getMonth(),
-                        dobString: emp['Date of Birth']
+                        month: dob.getMonth()
                     };
                 })
                 .filter(b => b && b.month === currentMonth);
             
-            // Generate calendar
             const firstDay = new Date(currentYear, currentMonth, 1).getDay();
             const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
             
             let calendarHTML = '<div style="display: contents;">';
             const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             
-            // Day headers
             dayNames.forEach(day => {
                 calendarHTML += `<div style="text-align: center; font-weight: 600; color: var(--secondary-color); padding: 8px; border-bottom: 2px solid var(--border-color);">${day}</div>`;
             });
             
-            // Empty cells before first day
             for (let i = 0; i < firstDay; i++) {
                 calendarHTML += '<div></div>';
             }
             
-            // Calendar days
             for (let day = 1; day <= daysInMonth; day++) {
                 const hasBirthday = birthdaysThisMonth.some(b => b.day === day);
                 const isToday = day === currentDay;
                 
-                let cellStyle = 'padding: 12px; text-align: center; border: 1px solid var(--border-color); border-radius: 8px; transition: all 0.3s;';
+                let cellStyle = 'padding: 12px; text-align: center; border: 1px solid var(--border-color); border-radius: 8px;';
                 if (isToday) {
                     cellStyle += ' background: var(--primary-color); color: white; font-weight: 700;';
                 } else if (hasBirthday) {
-                    cellStyle += ' background: linear-gradient(135deg, #FFC1CC 0%, #FFE5E5 100%); font-weight: 600; cursor: pointer;';
+                    cellStyle += ' background: linear-gradient(135deg, #FFC1CC 0%, #FFE5E5 100%); font-weight: 600;';
                 } else {
                     cellStyle += ' background: var(--card-bg);';
                 }
@@ -1623,8 +1616,8 @@
                 let cellContent = `<div style="${cellStyle}">`;
                 cellContent += `<div style="font-size: 1.1rem;">${day}</div>`;
                 if (hasBirthday) {
-                    const birthdayCount = birthdaysThisMonth.filter(b => b.day === day).length;
-                    cellContent += `<div style="font-size: 0.75rem; margin-top: 4px;">🎂 ${birthdayCount}</div>`;
+                    const count = birthdaysThisMonth.filter(b => b.day === day).length;
+                    cellContent += `<div style="font-size: 0.75rem; margin-top: 4px;">🎂 ${count}</div>`;
                 }
                 cellContent += '</div>';
                 
@@ -1634,7 +1627,6 @@
             calendarHTML += '</div>';
             document.getElementById('birthday-calendar').innerHTML = calendarHTML;
             
-            // Generate birthday list
             if (birthdaysThisMonth.length > 0) {
                 birthdaysThisMonth.sort((a, b) => a.day - b.day);
                 
@@ -1642,19 +1634,11 @@
                 listHTML += '<div style="display: grid; gap: 12px;">';
                 
                 birthdaysThisMonth.forEach(birthday => {
-                    const isPast = birthday.day < currentDay;
                     const isToday = birthday.day === currentDay;
+                    const isPast = birthday.day < currentDay;
                     
-                    let bgColor = 'var(--card-bg)';
-                    let borderColor = 'var(--border-color)';
-                    
-                    if (isToday) {
-                        bgColor = 'linear-gradient(135deg, #A05252 0%, #8B4545 100%)';
-                        borderColor = '#A05252';
-                    } else if (!isPast) {
-                        bgColor = '#FFF8F8';
-                        borderColor = '#FFE5E5';
-                    }
+                    let bgColor = isToday ? 'linear-gradient(135deg, #A05252 0%, #8B4545 100%)' : (isPast ? 'var(--card-bg)' : '#FFF8F8');
+                    let borderColor = isToday ? '#A05252' : (isPast ? 'var(--border-color)' : '#FFE5E5');
                     
                     listHTML += `<div style="padding: 16px; background: ${bgColor}; border: 2px solid ${borderColor}; border-radius: 12px; display: flex; align-items: center; gap: 16px; ${isToday ? 'color: white;' : ''}">`;
                     listHTML += `<div style="font-size: 2rem;">🎂</div>`;
@@ -1664,9 +1648,7 @@
                     listHTML += `</div>`;
                     listHTML += `<div style="text-align: right;">`;
                     listHTML += `<div style="font-size: 1.5rem; font-weight: 700; ${isToday ? 'color: white;' : 'color: var(--primary-color);'}">${monthNames[currentMonth]} ${birthday.day}</div>`;
-                    if (isToday) {
-                        listHTML += `<div style="font-size: 0.85rem; color: rgba(255,255,255,0.9); margin-top: 4px;">🎊 Today!</div>`;
-                    }
+                    if (isToday) listHTML += `<div style="font-size: 0.85rem; color: rgba(255,255,255,0.9); margin-top: 4px;">🎊 Today!</div>`;
                     listHTML += `</div>`;
                     listHTML += `</div>`;
                 });
@@ -2680,4 +2662,3 @@
     </script>
 </body>
 </html>
-
