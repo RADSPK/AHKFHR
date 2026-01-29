@@ -987,7 +987,7 @@
         // ===================================================
 
         // Google Sheets CSV Configuration
-        const GOOGLE_SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRTf2qj4n3jmOGT1vkd1QUChdZbazTynus5-AgNUTrGPfGjbmLoWWKk_YneSHnNWjMphgDmcmt_m5Ac/pub?output=csv';
+        const GOOGLE_SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/1hG7553rLrjfiW3sGH2eJ7FJGfTQogfa1yxlsfGheiU8/edit?gid=0#gid=0';
         const AUTO_REFRESH_INTERVAL = 300000; // 5 minutes
 
         let employees = [];
@@ -1758,6 +1758,9 @@
             renderEmploymentTypeChart();
             renderDeptHeadcountChart();
             renderDeptSalaryChart();
+            
+            // Generate birthday calendar
+            generateBirthdayCalendar();
             
             const recentHires = employees.filter(e => e.Status === 'Active').sort((a, b) => parseDate(b['Date of Joining']) - parseDate(a['Date of Joining'])).slice(0, 5);
             renderTable(recentHiresTableBody, recentHires, ['Name', 'Department', 'Position', 'Status']);
