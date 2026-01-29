@@ -1088,12 +1088,6 @@
         }
 
         async function loadDataFromGoogleSheets() {
-            console.log('===================================================');
-            console.log('LOADING DATA FROM GOOGLE SHEETS');
-            console.log('===================================================');
-            console.log('Time:', new Date().toLocaleString());
-            console.log('Sheet URL:', GOOGLE_SHEETS_CSV_URL);
-            
             const btn = document.getElementById('refresh-data-btn');
             if (btn) {
                 btn.classList.add('loading');
@@ -1122,16 +1116,8 @@
                 }
                 
                 const csvText = await response.text();
-                console.log('CSV loaded successfully!');
-                console.log('CSV length:', csvText.length, 'characters');
-                console.log('First 200 characters:', csvText.substring(0, 200));
-                
+                console.log('CSV loaded, length:', csvText.length);
                 const rawData = parseCSVData(csvText);
-                console.log('Parsed rows:', rawData.length);
-                if (rawData.length > 0) {
-                    console.log('Column headers:', Object.keys(rawData[0]));
-                    console.log('First row sample:', rawData[0]);
-                }
                 
                 if (rawData.length > 0) {
                     // Process employee data with column mapping and calculations
@@ -1160,17 +1146,7 @@
                         };
                     });
                     
-                    console.log('===================================================');
-                    console.log(`✓ SUCCESS: Loaded ${employees.length} employees`);
-                    console.log('Time:', new Date().toLocaleTimeString());
-                    console.log('Sample employee:', employees[0]);
-                    console.log('===================================================');
-                    
-                    if (employees.length === 0) {
-                        console.warn('⚠️ WARNING: No employees loaded! Check your Google Sheet.');
-                        console.warn('Make sure the sheet has data rows (not just headers)');
-                    }
-                    
+                    console.log(`✓ Loaded ${employees.length} employees from Google Sheets at ${new Date().toLocaleTimeString()}`);
                     updateUI();
                     
                     if (btn) {
@@ -1183,24 +1159,8 @@
                 if (btn) {
                     btn.classList.remove('loading');
                 }
-                console.error('=== GOOGLE SHEETS ERROR DETAILS ===');
-                console.error('Error:', error);
-                console.error('Error message:', error.message);
-                console.error('Error stack:', error.stack);
-                
-                let errorMsg = 'Could not load data from Google Sheets.\n\n';
-                errorMsg += 'Error: ' + error.message + '\n\n';
-                errorMsg += 'Common fixes:\n';
-                errorMsg += '1. Make sure your Google Sheet is published:\n';
-                errorMsg += '   File → Share → Publish to web\n';
-                errorMsg += '   Select "Entire Document" and "Comma-separated values (.csv)"\n';
-                errorMsg += '2. Check that the published link matches the URL in the code\n';
-                errorMsg += '3. Try opening the URL directly in a new browser tab\n';
-                errorMsg += '4. Check browser console (F12) for more details\n\n';
-                errorMsg += 'Sheet URL: ' + GOOGLE_SHEETS_CSV_URL;
-                
                 if (employees.length === 0) {
-                    alert(errorMsg);
+                    alert('Could not load data from Google Sheets. Please check:\n1. Your sheet is published\n2. Internet connection is working\n\nError: ' + error.message);
                 }
                 return false;
             }
@@ -2720,4 +2680,3 @@
     </script>
 </body>
 </html>
-
